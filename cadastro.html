@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>body{background:#ffffff !important}</style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="brand">
+      <div class="logo">AG</div>
+      <div>
+        <h1 id="title">Criar conta</h1>
+        <p class="lead">Informe os dados para cadastro</p>
+      </div>
+    </div>
+
+    <form id="registerForm" novalidate>
+      <label for="cpf">CPF</label>
+      <input id="cpf" name="cpf" type="text" placeholder="000.000.000-00" maxlength="14" required>
+
+      <label for="nome">Nome</label>
+      <input id="nome" name="nome" type="text" placeholder="Nome" required>
+
+      <label for="sobrenome">Sobrenome</label>
+      <input id="sobrenome" name="sobrenome" type="text" placeholder="Sobrenome" required>
+
+      <label for="contact">Email ou número de telefone</label>
+      <input id="contact" name="contact" type="text" placeholder="email@exemplo.com ou 11987654321" required>
+
+      <button id="submitBtn" type="submit">Cadastrar</button>
+      <div id="message" class="helper"></div>
+    </form>
+
+    <div class="footer">Já tem conta? <a href="login.html">Entrar</a></div>
+  </main>
+
+  <script>
+  (function(){
+    const cpfInput = document.getElementById('cpf');
+    const form = document.getElementById('registerForm');
+    const msg = document.getElementById('message');
+
+    function formatCPF(v){
+      v = v.replace(/\D/g,'').slice(0,11);
+      v = v.replace(/(\d{3})(\d)/,'$1.$2');
+      v = v.replace(/(\d{3})(\d)/,'$1.$2');
+      v = v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+      return v;
+    }
+    cpfInput.addEventListener('input', e=>{ e.target.value = formatCPF(e.target.value); });
+
+    function validateCPF(value){
+      const nums = value.replace(/\D/g,'');
+      if(nums.length !== 11) return false;
+      let sum=0, rest;
+      for(let i=1;i<=9;i++) sum += parseInt(nums.substring(i-1,i)) * (11 - i);
+      rest = (sum * 10) % 11; if(rest === 10) rest = 0;
+      if(rest !== parseInt(nums.substring(9,10))) return false;
+      sum = 0;
+      for(let i=1;i<=10;i++) sum += parseInt(nums.substring(i-1,i)) * (12 - i);
+      rest = (sum * 10) % 11; if(rest === 10) rest = 0;
+      if(rest !== parseInt(nums.substring(10,11))) return false;
+      return true;
+    }
+
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      msg.className = 'helper'; msg.textContent = '';
+      const cpf = cpfInput.value.trim();
+      const nome = document.getElementById('nome').value.trim();
+      const sobrenome = document.getElementById('sobrenome').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      if(!cpf || !nome || !sobrenome || !contact){ msg.className='error'; msg.textContent='Preencha todos os campos.'; return; }
+      if(!validateCPF(cpf)){ msg.className='error'; msg.textContent='CPF inválido.'; return; }
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+      const isPhone = /^\+?\d{8,15}$/.test(contact.replace(/[\s()-]/g,''));
+      if(!isEmail && !isPhone){ msg.className='error'; msg.textContent='Informe um e-mail válido ou número de telefone.'; return; }
+      msg.className='helper'; msg.textContent='Cadastro realizado com sucesso!';
+      form.reset();
+    });
+  })();
+  </script>
+</body>
+</html>
