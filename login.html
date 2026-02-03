@@ -27,10 +27,9 @@
 
             <div id="message" role="status" aria-live="polite"></div>
         </form>
-
-        <div class="footer">
-            Não tem conta? <a href="#" id="register">Criar conta</a>
-        </div>
+       <div class="footer">
+            Não tem conta? <a href="cadastro.html" id="register">Criar conta</a>
+</div>
     </main>
 
     <script>
@@ -98,10 +97,6 @@
             document.getElementById('forgot').addEventListener('click', function(e){
                 e.preventDefault();
                 alert('Fluxo de recuperação de senha não implementado.');
-            });
-            document.getElementById('register').addEventListener('click', function(e){
-                e.preventDefault();
-                alert('Fluxo de registro não implementado.');
             });
         })();
     </script>
