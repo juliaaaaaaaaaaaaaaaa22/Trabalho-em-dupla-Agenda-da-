@@ -1,11 +1,834 @@
 <!DOCTYPE html>
-<html lang="br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Metamorfose Capilar · Agendamento Inteligente</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #fbfbfb;
+            color: #111111;
+            line-height: 1.4;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: #ffffff;
+            border-bottom: 1px solid #eaeaea;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #1e1e1e, #3a3a3a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+        .logo span {
+            font-weight: 300;
+            color: #a5a5a5;
+            font-size: 1rem;
+            margin-left: 4px;
+            -webkit-text-fill-color: #a5a5a5;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            font-weight: 500;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #2d2d2d;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .nav-links a:hover {
+            color: #000000;
+            border-bottom: 2px solid #111;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #222;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+        .btn-outline:hover {
+            background: #222;
+            color: white;
+        }
+        .btn-black {
+            background: #111;
+            border: none;
+            padding: 0.6rem 1.6rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+        .btn-black:hover {
+            background: #333;
+        }
+
+        /* HERO COM VÍDEO */
+        .hero-video {
+            background-color: #eaeaea;
+            height: 75vh;
+            min-height: 600px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-video video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7) saturate(1.2);
+            z-index: 0;
+        }
+        .hero-overlay {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+        .hero-overlay h2 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .hero-overlay p {
+            font-size: 1.4rem;
+            margin: 1.5rem 0 2.5rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        /* SEÇÃO DE AGENDAMENTO COMPLETO */
+        .agendamento-completo {
+            padding: 5rem 5%;
+            background: white;
+        }
+        .section-tag {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 3rem;
+        }
+
+        .agendamento-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            background: #f8f8f8;
+            border-radius: 60px;
+            padding: 3rem;
+            box-shadow: 0 30px 50px -20px rgba(0,0,0,0.2);
+        }
+
+        /* Lado da imagem */
+        .agendamento-imagem {
+            background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
+            border-radius: 40px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background-image: url('image.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .agendamento-imagem::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%);
+            border-radius: 40px;
+        }
+        .imagem-conteudo {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+        .imagem-conteudo h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .imagem-conteudo p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Formulário de agendamento */
+        .agendamento-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            color: #333;
+        }
+        .form-group select, .form-group input {
+            padding: 1.2rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            background: white;
+            outline: none;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .form-group select:focus, .form-group input:focus {
+            border-color: #111;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+        .data-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 50%;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: 0.1s;
+        }
+        .data-cell:hover, .data-cell.selecionada {
+            background: #111;
+            color: white;
+            border-color: #111;
+        }
+        .data-cell.hoje {
+            border: 2px solid #111;
+            font-weight: 700;
+        }
+
+        .horarios-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .horario-btn {
+            padding: 1rem 0.5rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+        .horario-btn:hover, .horario-btn.selecionado {
+            background: #111;
+            color: white;
+            border-color: #111;
+        }
+        .horario-btn.indisponivel {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-agendar {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 1.5rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 1rem;
+        }
+        .btn-agendar:hover {
+            background: #333;
+            transform: scale(1.02);
+        }
+
+        .resumo-agendamento {
+            background: #111;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .resumo-texto p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        .resumo-texto h4 {
+            font-size: 1.4rem;
+            margin-top: 0.2rem;
+        }
+
+        /* MODELOS INTERATIVOS */
+        .modelos-section {
+            padding: 5rem 5%;
+            background: #f4f4f4;
+        }
+        .modelos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .modelo-card {
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 30px -15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .modelo-card:hover {
+            transform: scale(1.02);
+        }
+        .img-container {
+            width: 100%;
+            aspect-ratio: 1 / 1.1;
+            background-color: #d9d9d9;
+            position: relative;
+            overflow: hidden;
+        }
+        .img-model {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.25s ease-in-out;
+        }
+        .modelo1 .img-model {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIiB2aWV3Qm94PSIwIDAgODAwIDgwMCI+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI4MDAiIGZpbGw9IiMyYzJjMmMiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSIzMDAiIHI9IjE0MCIgZmlsbD0iI2UwZTBlMCIvPjxwYXRoIGQ9Ik0yMjAgNTUwIEMyMjAgNDUwIDU4MCA0NTAgNTgwIDU1MCBMNTgwIDcwMCBMMjIwIDcwMCBaIiBmaWxsPSIjZTBlMGUwIi8+PHJlY3QgeD0iMjAwIiB5PSI1MDAiIHdpZHRoPSI0MDAiIGhlaWdodD0iMjAiIGZpbGw9IiM5OTkiLz48L3N2Zz4=');
+        }
+        .modelo1:hover .img-model {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIiB2aWV3Qm94PSIwIDAgODAwIDgwMCI+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI4MDAiIGZpbGw9IiMyYzJjMmMiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSIzMDAiIHI9IjE0MCIgZmlsbD0iI2UwZTBlMCIvPjxwYXRoIGQ9Ik0yMjAgNTUwIEMyMjAgNDUwIDU4MCA0NTAgNTgwIDU1MCBMNTgwIDcwMCBMMjIwIDcwMCBaIiBmaWxsPSIjZTBlMGUwIi8+PHBvbHlsaW5lIHBvaW50cz0iMjAwLDUwMCAzMDAsNDAwIDUwMCw0MDAgNjAwLDUwMCAyMDAsNTAwIiBmaWxsPSIjMzIxZTEzIi8+PHJlY3QgeD0iMjUwIiB5PSI0MjAiIHdpZHRoPSIzMDAiIGhlaWdodD0iODAiIGZpbGw9IiM0YzJhMjAiLz48L3N2Zz4=');
+        }
+        .modelo-info {
+            padding: 1.5rem;
+        }
+        .modelo-info h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        .modelo-info p {
+            color: #555;
+        }
+
+        /* PÁGINA DE LOGIN (inicialmente oculta) */
+        .pagina-login, .pagina-cadastro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .pagina-login.ativo, .pagina-cadastro.ativo {
+            display: flex;
+        }
+        .login-card, .cadastro-card {
+            background: white;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 60px;
+            padding: 3rem;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .fechar-modal {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #999;
+            transition: 0.2s;
+            line-height: 1;
+        }
+        .fechar-modal:hover {
+            color: #111;
+        }
+        .login-card h2, .cadastro-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .login-card p, .cadastro-card p {
+            color: #666;
+            margin-bottom: 2.5rem;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: #111;
+        }
+        .login-card .btn-black, .cadastro-card .btn-black {
+            width: 100%;
+            padding: 1.2rem;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+        }
+        .link-cadastro, .link-login {
+            text-align: center;
+            color: #666;
+        }
+        .link-cadastro span, .link-login span {
+            color: #111;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #111;
+            color: #ccc;
+            padding: 3rem 5%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer .logo h2 {
+            color: white;
+        }
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .footer-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .agendamento-container {
+                grid-template-columns: 1fr;
+            }
+            .nav-links, .auth-buttons {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    
+    <header class="header">
+        <div class="logo" onclick="mostrarHome()">
+            <h1>metamorfose<span>·cabello</span></h1>
+        </div>
+        <nav class="nav-links">
+            <a onclick="mostrarHome()">Início</a>
+            <a onclick="mostrarHome()">Agendar</a>
+            <a href="#">Barbeiros</a>
+            <a href="#">Inspire-se</a>
+        </nav>
+        <div class="auth-buttons">
+            <button class="btn-outline" onclick="abrirCadastro()">Cadastre-se</button>
+            <button class="btn-black" onclick="abrirLogin()">Entrar</button>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- HERO COM VÍDEO -->
+        <section class="hero-video">
+            <video autoplay muted loop playsinline>
+                <source src="video.webm" type="video/mp4">
+            </video>
+            <div class="hero-overlay">
+                <h2>corte que te representa.</h2>
+                <p>Agende com os melhores barbeiros em segundos.</p>
+            </div>
+        </section>
+
+        <!-- AGENDAMENTO COMPLETO COM IMAGEM -->
+        <section class="agendamento-completo">
+            <div class="section-tag">ESCOLHA SEU HORÁRIO</div>
+            <h2 class="section-title">agendamento inteligente</h2>
+            
+            <div class="agendamento-container">
+                <!-- Lado com imagem -->
+                <div class="agendamento-imagem">
+                    <div class="imagem-conteudo">
+                        <h3>SUA</h3>
+                        <h3>TRANSFORMAÇÃO</h3>
+                        <h3>COMEÇA AQUI</h3>
+                        <p>Selecione data, local e horário</p>
+                    </div>
+                </div>
+
+                <!-- Formulário de agendamento -->
+                <div class="agendamento-form">
+                    <div class="form-group">
+                        <label>📍 ESCOLHA A CIDADE</label>
+                        <select id="cidade" onchange="atualizarResumo()">
+                            <option value="São Paulo">São Paulo - Centro</option>
+                            <option value="São Paulo">São Paulo - Vila Olímpia</option>
+                            <option value="Rio de Janeiro">Rio de Janeiro - Ipanema</option>
+                            <option value="Belo Horizonte">Belo Horizonte - Savassi</option>
+                            <option value="Curitiba">Curitiba - Batel</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📅 ESCOLHA A DATA</label>
+                        <div class="data-grid" id="data-grid">
+                            <!-- Gerado via JS -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>⏰ ESCOLHA O HORÁRIO</label>
+                        <div class="horarios-grid" id="horarios-grid">
+                            <div class="horario-btn" onclick="selecionarHorario(this)">09:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">10:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">11:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">13:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">14:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">15:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">16:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">17:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">18:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">19:00</div>
+                            <div class="horario-btn" onclick="selecionarHorario(this)">20:00</div>
+                        </div>
+                    </div>
+
+                    <div class="resumo-agendamento" id="resumo-agendamento">
+                        <div class="resumo-texto">
+                            <p>Agendamento atual</p>
+                            <h4 id="resumo-local">São Paulo · Centro</h4>
+                            <p id="resumo-data-hora">Selecione data e horário</p>
+                        </div>
+                        <button class="btn-agendar" onclick="finalizarAgendamento()">Agendar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODELOS INTERATIVOS -->
+        <section class="modelos-section">
+            <div class="section-tag">antes & depois</div>
+            <h2 class="section-title">passe o mouse e veja a mágica</h2>
+            <div class="modelos-grid">
+                <div class="modelo-card modelo1">
+                    <div class="img-container">
+                        <div class="img-model"></div>
+                    </div>
+                    <div class="modelo-info">
+                        <h3>careca → degradê</h3>
+                        <p>transformação com fade navalhado</p>
+                    </div>
+                </div>
+                <div class="modelo-card modelo2">
+                    <div class="img-container">
+                        <div class="img-model"></div>
+                    </div>
+                    <div class="modelo-info">
+                        <h3>raspado → desconectado</h3>
+                        <p>volume e textura do zero</p>
+                    </div>
+                </div>
+                <div class="modelo-card modelo3">
+                    <div class="img-container">
+                        <div class="img-model"></div>
+                    </div>
+                    <div class="modelo-info">
+                        <h3>baixo → top franja</h3>
+                        <p>estilo jovem e moderno</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PÁGINA DE LOGIN (MODAL) -->
+    <div class="pagina-login" id="pagina-login">
+        <div class="login-card">
+            <span class="fechar-modal" onclick="fecharLogin()">×</span>
+            <h2>bem-vindo de volta</h2>
+            <p>acesse sua conta para agendar</p>
+            
+            <div class="input-group">
+                <label>E-MAIL</label>
+                <input type="email" placeholder="seu@email.com">
+            </div>
+            <div class="input-group">
+                <label>SENHA</label>
+                <input type="password" placeholder="••••••••">
+            </div>
+            
+            <button class="btn-black" onclick="fazerLogin()">Entrar</button>
+            
+            <p class="link-cadastro">
+                Ainda não tem conta? <span onclick="abrirCadastro()">Cadastre-se</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- PÁGINA DE CADASTRO (MODAL) -->
+    <div class="pagina-cadastro" id="pagina-cadastro">
+        <div class="cadastro-card">
+            <span class="fechar-modal" onclick="fecharCadastro()">×</span>
+            <h2>crie sua conta</h2>
+            <p>comece a transformação hoje</p>
+            
+            <div class="input-group">
+                <label>NOME COMPLETO</label>
+                <input type="text" placeholder="Seu nome">
+            </div>
+            <div class="input-group">
+                <label>E-MAIL</label>
+                <input type="email" placeholder="seu@email.com">
+            </div>
+            <div class="input-group">
+                <label>TELEFONE</label>
+                <input type="tel" placeholder="(11) 99999-9999">
+            </div>
+            <div class="input-group">
+                <label>SENHA</label>
+                <input type="password" placeholder="••••••••">
+            </div>
+            
+            <button class="btn-black" onclick="fazerCadastro()">Cadastrar</button>
+            
+            <p class="link-login">
+                Já tem conta? <span onclick="abrirLogin()">Fazer login</span>
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="logo">
+            <h2>metamorfose<span style="color:#777"> ·cabello</span></h2>
+        </div>
+        <div class="footer-links">
+            <a href="#">app</a>
+            <a href="#">blog</a>
+            <a href="#">contato</a>
+            <a href="#">trabalhe conosco</a>
+        </div>
+        <div>© 2026 · feito para você</div>
+    </footer>
+
+    <script>
+        // Estado global do agendamento
+        let agendamentoAtual = {
+            cidade: 'São Paulo',
+            data: null,
+            horario: null
+        };
+
+        // Gerar calendário
+        function gerarCalendario() {
+            const grid = document.getElementById('data-grid');
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = hoje.getMonth();
+            
+            // Dias do mês atual (fevereiro 2026 como exemplo)
+            const dias = [26,27,28,29,30,31,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];
+            
+            grid.innerHTML = '';
+            ['D','S','T','Q','Q','S','S'].forEach(dia => {
+                const div = document.createElement('div');
+                div.style.textAlign = 'center';
+                div.style.fontWeight = '600';
+                div.style.color = '#777';
+                div.textContent = dia;
+                grid.appendChild(div);
+            });
+            
+            dias.forEach((dia, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'data-cell';
+                if (dia === 24) cell.classList.add('hoje');
+                cell.textContent = dia;
+                cell.onclick = () => selecionarData(dia, cell);
+                grid.appendChild(cell);
+            });
+        }
+
+        function selecionarData(dia, element) {
+            document.querySelectorAll('.data-cell').forEach(el => el.classList.remove('selecionada'));
+            element.classList.add('selecionada');
+            agendamentoAtual.data = `${dia} de fevereiro de 2026`;
+            atualizarResumo();
+        }
+
+        function selecionarHorario(element) {
+            document.querySelectorAll('.horario-btn').forEach(el => el.classList.remove('selecionado'));
+            element.classList.add('selecionado');
+            agendamentoAtual.horario = element.textContent;
+            atualizarResumo();
+        }
+
+        function atualizarResumo() {
+            const cidade = document.getElementById('cidade').value;
+            agendamentoAtual.cidade = cidade;
+            
+            document.getElementById('resumo-local').textContent = cidade;
+            
+            if (agendamentoAtual.data && agendamentoAtual.horario) {
+                document.getElementById('resumo-data-hora').textContent = 
+                    `${agendamentoAtual.data} às ${agendamentoAtual.horario}`;
+            } else if (agendamentoAtual.data) {
+                document.getElementById('resumo-data-hora').textContent = 
+                    `${agendamentoAtual.data} · selecione horário`;
+            } else {
+                document.getElementById('resumo-data-hora').textContent = 
+                    'Selecione data e horário';
+            }
+        }
+
+        function finalizarAgendamento() {
+            if (!agendamentoAtual.data || !agendamentoAtual.horario) {
+                alert('Por favor, selecione data e horário para agendar!');
+                return;
+            }
+            alert(`Agendamento confirmado!\n${agendamentoAtual.cidade}\n${agendamentoAtual.data} às ${agendamentoAtual.horario}`);
+        }
+
+        // Controle de modais
+        function abrirLogin() {
+            document.getElementById('pagina-login').classList.add('ativo');
+        }
+        function fecharLogin() {
+            document.getElementById('pagina-login').classList.remove('ativo');
+        }
+        function abrirCadastro() {
+            document.getElementById('pagina-cadastro').classList.add('ativo');
+        }
+        function fecharCadastro() {
+            document.getElementById('pagina-cadastro').classList.remove('ativo');
+        }
+        function fazerLogin() {
+            alert('Login realizado com sucesso! (simulação)');
+            fecharLogin();
+        }
+        function fazerCadastro() {
+            alert('Cadastro realizado com sucesso! (simulação)');
+            fecharCadastro();
+        }
+        function mostrarHome() {
+            fecharLogin();
+            fecharCadastro();
+        }
+
+        // Fechar modais com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                fecharLogin();
+                fecharCadastro();
+            }
+        });
+
+        // Inicializar
+        window.onload = () => {
+            gerarCalendario();
+            atualizarResumo();
+        };
+    </script>
 </body>
 </html>
